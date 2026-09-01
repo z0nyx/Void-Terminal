@@ -1,0 +1,9 @@
+{
+  "platforms": ["apple", "android", "web"],
+  "apple": {
+    "modules": ["VoidSshModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.voidssh.VoidSshModule"]
+  }
+}

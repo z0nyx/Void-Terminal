@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "Void Terminal",
+    "slug": "void-terminal",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/app-icon.png",
+    "scheme": "voidterminal",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "sh.void.terminal",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Void Terminal uses Face ID to unlock saved passwords and private keys."
+      }
+    },
+    "android": {
+      "package": "sh.void.terminal",
+      "adaptiveIcon": {
+        "backgroundColor": "#232323",
+        "foregroundImage": "./assets/app-icon.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-font",
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Void Terminal uses Face ID to unlock saved passwords and private keys."
+        }
+      ]
+    ]
+  }
+}

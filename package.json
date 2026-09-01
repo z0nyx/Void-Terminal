@@ -1,0 +1,38 @@
+{
+  "name": "void-terminal",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "dependencies": {
+    "@gorhom/bottom-sheet": "^5.2.14",
+    "@react-navigation/bottom-tabs": "^7.18.18",
+    "@react-navigation/native": "^7.3.18",
+    "@xterm/headless": "^6.0.0",
+    "expo": "~57.0.18",
+    "expo-font": "~57.0.2",
+    "expo-haptics": "~57.0.2",
+    "expo-local-authentication": "~57.0.2",
+    "expo-status-bar": "~57.0.1",
+    "react": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-gesture-handler": "~2.32.0",
+    "react-native-keychain": "^10.0.0",
+    "react-native-mmkv": "^4.3.2",
+    "react-native-reanimated": "4.5.1",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-screens": "~4.26.0",
+    "react-native-svg": "15.15.4",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@types/react": "~19.2.2",
+    "typescript": "~6.0.3"
+  },
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "typecheck": "tsc --noEmit"
+  },
+  "private": true
+}

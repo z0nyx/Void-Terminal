@@ -1,0 +1,30 @@
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'expo.modules.voidssh'
+version = '0.1.0'
+
+android {
+  namespace "expo.modules.voidssh"
+  defaultConfig {
+    versionCode 1
+    versionName "0.1.0"
+  }
+  lintOptions {
+    abortOnError false
+  }
+}
+
+dependencies {
+  // Pure-Java/Kotlin SSH client — actively maintained, gives us a raw
+  // InputStream/OutputStream on the shell channel (no line-buffering),
+  // which is the whole reason react-native-ssh-sftp (dead, RN ^0.54 only)
+  // was dropped in favor of this hand-written module. See ../README.md.
+  implementation 'com.hierynomus:sshj:0.38.0'
+  // Ed25519 keypair generation + host-key fingerprinting use BouncyCastle's
+  // lightweight API directly; sshj already pulls this in transitively but
+  // we pin it explicitly since we depend on its classes directly.
+  implementation 'org.bouncycastle:bcprov-jdk18on:1.78.1'
+}

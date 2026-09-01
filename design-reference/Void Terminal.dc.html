@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/modernist-88e2d083-2cdf-447e-bb02-14feb60cfbdc/styles.css">
+<script src="_ds/modernist-88e2d083-2cdf-447e-bb02-14feb60cfbdc/_ds_bundle.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FBF7F4;font-family:"Archivo",system-ui,sans-serif;color:#232323}
+a{color:#685D54;text-decoration:none;border-bottom:1px solid rgba(104,93,84,.35)}
+a:hover{color:#A39382}
+::-webkit-scrollbar{width:0;height:0}
+</style>
+</helmet>
+
+<div style="display:flex;align-items:flex-start;gap:56px;padding:48px 56px 80px;min-height:100vh;box-sizing:border-box">
+
+<div style="width:360px;flex:none">
+<div style="display:flex;align-items:center;gap:12px">
+<img src="assets/void-black.png" alt="Void" style="width:40px;height:40px;display:block">
+<div>
+<div style="font:800 22px/1 'Archivo',sans-serif;letter-spacing:-.02em">VOID TERMINAL</div>
+<div style="font:500 11px/1.4 'IBM Plex Mono',monospace;color:#A39382;letter-spacing:.08em;margin-top:4px">MOBILE SSH · MOSH · TMUX · PKG</div>
+</div>
+</div>
+<div style="height:2px;background:#232323;margin:20px 0"></div>
+
+<div style="font:600 10px/1 'IBM Plex Mono',monospace;letter-spacing:.14em;color:#685D54;margin-bottom:10px">01 — THE PROBLEM</div>
+<p style="font:400 13.5px/1.65 'Archivo',sans-serif;margin:0 0 22px;color:#685D54;text-wrap:pretty">Every mobile terminal fails at the same place: the phone keyboard has no Ctrl, no Esc, no arrows, and one thumb has to reach everything. Output is dense and unscrollable, and a dropped connection loses the session.</p>
+
+<div style="font:600 10px/1 'IBM Plex Mono',monospace;letter-spacing:.14em;color:#685D54;margin-bottom:10px">02 — THE BETS</div>
+<div style="display:grid;gap:14px;margin-bottom:22px">
+<div style="border-left:2px solid #232323;padding-left:12px"><div style="font:600 13px/1.3 'Archivo',sans-serif">Paged key bar</div><div style="font:400 12.5px/1.55 'Archivo',sans-serif;color:#685D54">Three rows — MOD, NAV, TMUX — one swipe or tap apart, sitting directly on the keyboard. Ctrl and Alt latch: tap once for one shot, twice to lock.</div></div>
+<div style="border-left:2px solid #232323;padding-left:12px"><div style="font:600 13px/1.3 'Archivo',sans-serif">Ghost autocomplete</div><div style="font:400 12.5px/1.55 'Archivo',sans-serif;color:#685D54">The rest of the command appears greyed ahead of the caret, from history and path. Tab or the ⇥ key accepts it, so long commands cost two taps.</div></div>
+<div style="border-left:2px solid #232323;padding-left:12px"><div style="font:600 13px/1.3 'Archivo',sans-serif">Command rail</div><div style="font:400 12.5px/1.55 'Archivo',sans-serif;color:#685D54">Every prompt leaves a tick on the right edge. Tapping a tick jumps to that command's output — scrollback without dragging through it.</div></div>
+<div style="border-left:2px solid #232323;padding-left:12px"><div style="font:600 13px/1.3 'Archivo',sans-serif">Sessions survive</div><div style="font:400 12.5px/1.55 'Archivo',sans-serif;color:#685D54">Mosh holds the session through the tunnel; the bar goes red and the buffer stays put instead of clearing.</div></div>
+</div>
+
+<div style="font:600 10px/1 'IBM Plex Mono',monospace;letter-spacing:.14em;color:#685D54;margin-bottom:10px">03 — TRY IT</div>
+<p style="font:400 13px/1.6 'Archivo',sans-serif;margin:0 0 8px;color:#685D54">Tap a host to connect. In the session you can type on your real keyboard: <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:#E5DED2;padding:1px 5px">ls</span> <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:#E5DED2;padding:1px 5px">uname -a</span> <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:#E5DED2;padding:1px 5px">pkg install neovim</span> <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:#E5DED2;padding:1px 5px">df -h</span> <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:#E5DED2;padding:1px 5px">tmux ls</span>. Tab accepts the ghost, ↑ walks history.</p>
+<p style="font:400 13px/1.6 'Archivo',sans-serif;margin:0;color:#685D54">In the session header, the bolt drops the link so you can watch mosh resume and the split square divides the pane. The command glyph at the end of the suggestion strip opens the snippet palette.</p>
+
+<div style="height:2px;background:#232323;margin:22px 0 14px"></div>
+<div style="font:600 10px/1 'IBM Plex Mono',monospace;letter-spacing:.14em;color:#A39382;margin-bottom:8px">OPEN QUESTIONS</div>
+<p style="font:400 12.5px/1.6 'Archivo',sans-serif;margin:0;color:#685D54">Key rows are fixed sets right now — should they be user-editable? And the file browser / SFTP screen is still missing; say the word and I'll add it as a fifth tab.</p>
+</div>
+
+<div style="position:sticky;top:48px;flex:none">
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ isDark }}" width="{{ 402 }}" height="{{ 874 }}" hint-size="402px,874px">
+
+<div style="height:100%;display:flex;flex-direction:column;position:relative;overflow:hidden;--t-bg:{{ tBg }};--t-fg:{{ tFg }};--t-out:{{ tOut }};--t-dim:{{ tDim }};--t-dim2:{{ tDim2 }};--t-faint:{{ tFaint }};--t-key:{{ tKey }};--t-keyh:{{ tKeyH }};--t-bar:{{ tBar }};--t-field:{{ tField }};--t-line:{{ tLine }};--t-line2:{{ tLine2 }};--t-scrim:{{ tScrim }};--t-hover:{{ tHover }};--t-acc:{{ tAcc }};--t-acc2:{{ tAcc2 }};background:var(--t-bg);color:var(--t-fg)">
+
+<sc-if value="{{ isWelcome }}" hint-placeholder-val="{{ true }}">
+<div style="height:100%;display:flex;flex-direction:column;padding:62px 26px 34px;box-sizing:border-box">
+
+<div style="flex:1;display:flex;align-items:center;justify-content:center;padding:24px 0">
+<img src="{{ logoSrc }}" alt="Void" style="width:190px;height:190px;display:block">
+</div>
+<div style="font:800 34px/1.06 'Archivo',sans-serif;letter-spacing:-.03em;margin-bottom:14px;text-wrap:pretty">A terminal that fits one thumb</div>
+<div style="font:400 14px/1.5 'Archivo',sans-serif;color:var(--t-dim);margin-bottom:26px;max-width:300px">SSH, mosh and a local shell, with the modifier keys the phone keyboard forgot.</div>
+<div onClick="{{ start }}" style="display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--t-acc);color:var(--t-bg);font:600 13px/1 'IBM Plex Mono',monospace;letter-spacing:.12em;padding:19px 20px;cursor:pointer" style-hover="background:var(--t-acc2)">
+GET STARTED
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+</div>
+
+</div>
+</sc-if>
+
+<sc-if value="{{ isHosts }}" hint-placeholder-val="{{ false }}">
+<div style="padding:58px 20px 14px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px">
+<div style="display:flex;align-items:center;gap:10px">
+<img src="{{ logoSrc }}" alt="" style="width:26px;height:26px;display:block">
+<div style="font:800 20px/1 'Archivo',sans-serif;letter-spacing:-.02em">HOSTS</div>
+</div>
+<div onClick="{{ openNewHost }}" style="display:flex;align-items:center;gap:6px;font:600 11px/1 'IBM Plex Mono',monospace;letter-spacing:.1em;color:var(--t-bg);background:var(--t-acc);padding:9px 12px;cursor:pointer" style-hover="background:var(--t-acc2)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>NEW</div>
+</div>
+<div style="height:2px;background:var(--t-fg);margin:0 20px"></div>
+<div style="flex:1;overflow:auto;padding:0 20px 20px">
+<sc-for list="{{ hosts }}" as="h" hint-placeholder-count="4">
+<div onClick="{{ h.open }}" style="padding:16px 0;border-bottom:1px solid var(--t-line);cursor:pointer;display:flex;gap:12px;align-items:flex-start" style-hover="background:var(--t-hover)">
+<div style="width:12px;flex:none;padding-top:4px">
+<div style="width:9px;height:9px;box-sizing:border-box;background:{{ h.dotBg }};border:1.5px solid {{ h.dotLine }}"></div>
+</div>
+<div style="flex:1;min-width:0">
+<div style="display:flex;align-items:center;gap:7px;color:var(--t-acc)">
+<sc-if value="{{ h.kCloud }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M17.5 19a4.5 4.5 0 0 0 0-9 6 6 0 0 0-11.6 1.6A3.7 3.7 0 0 0 6.5 19Z"></path></svg></sc-if>
+<sc-if value="{{ h.kCi }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M3 7h6l3 5-3 5H3"></path><circle cx="18" cy="7" r="3"></circle><circle cx="18" cy="17" r="3"></circle></svg></sc-if>
+<sc-if value="{{ h.kCpu }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><rect x="6" y="6" width="12" height="12"></rect><rect x="10" y="10" width="4" height="4"></rect><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"></path></svg></sc-if>
+<sc-if value="{{ h.kDb }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><ellipse cx="12" cy="5" rx="8" ry="3"></ellipse><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"></path><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"></path></svg></sc-if>
+<sc-if value="{{ h.kServer }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><rect x="2" y="3" width="20" height="8"></rect><rect x="2" y="13" width="20" height="8"></rect><line x1="6" y1="7" x2="6.01" y2="7"></line><line x1="6" y1="17" x2="6.01" y2="17"></line></svg></sc-if>
+<div style="font:600 16px/1.2 'Archivo',sans-serif;letter-spacing:-.01em">{{ h.name }}</div></div>
+<div style="font:400 12px/1.4 'IBM Plex Mono',monospace;color:var(--t-dim);margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ h.addr }}</div>
+<div style="display:flex;gap:6px;margin-top:9px;flex-wrap:wrap">
+<sc-for list="{{ h.tags }}" as="t" hint-placeholder-count="2">
+<div style="font:500 9.5px/1 'IBM Plex Mono',monospace;letter-spacing:.1em;padding:5px 7px;border:1px solid var(--t-line2);color:var(--t-out)">{{ t }}</div>
+</sc-for>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex:none">
+<div style="font:400 11px/1.4 'IBM Plex Mono',monospace;color:var(--t-faint)">{{ h.meta }}</div>
+<div onClick="{{ h.edit }}" title="edit connection" style="color:var(--t-dim2);cursor:pointer;padding:4px;display:flex" style-hover="color:var(--t-acc)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg></div>
+</div>
+</div>
+</sc-for>
+<div style="font:500 10px/1 'IBM Plex Mono',monospace;letter-spacing:.12em;color:var(--t-faint);margin:22px 0 12px">LOCAL</div>
+<div onClick="{{ openLocal }}" style="border:1px solid var(--t-line2);padding:14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer" style-hover="border-color:var(--t-acc)">
+<div style="display:flex;align-items:center;gap:10px">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+<div>
+<div style="font:600 15px/1.2 'Archivo',sans-serif">Termux shell</div>
+<div style="font:400 11.5px/1.4 'IBM Plex Mono',monospace;color:var(--t-dim);margin-top:4px">aarch64 · 412 packages</div>
+</div>
+</div>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t-acc)" stroke-width="2.5" stroke-linecap="square"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isSession }}" hint-placeholder-val="{{ false }}">
+<div style="padding:56px 14px 10px;display:flex;align-items:center;gap:10px;flex:none">
+<div onClick="{{ goHosts }}" style="color:var(--t-dim);cursor:pointer;padding:4px 6px 4px 0;display:flex" style-hover="color:var(--t-fg)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg></div>
+<div style="flex:1;min-width:0">
+<div style="font:600 14.5px/1.2 'Archivo',sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ activeName }}</div>
+<div style="font:400 10.5px/1.3 'IBM Plex Mono',monospace;color:var(--t-dim);margin-top:2px">{{ activeMeta }}</div>
+</div>
+<div onClick="{{ toggleDrop }}" title="simulate link drop" style="color:var(--t-dim);cursor:pointer;padding:6px 7px;display:flex" style-hover="color:var(--t-acc)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter"><path d="M4 14h7l-2 8 11-12h-7l2-8z"></path></svg></div>
+<div onClick="{{ toggleSplit }}" title="split pane" style="color:var(--t-dim);cursor:pointer;padding:6px 7px;display:flex" style-hover="color:var(--t-acc)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18"></rect><path d="M3 12h18"></path></svg></div>
+<div onClick="{{ openSwitcher }}" style="display:flex;align-items:center;gap:5px;font:600 11px/1 'IBM Plex Mono',monospace;color:var(--t-bg);background:var(--t-fg);padding:7px 9px;cursor:pointer" style-hover="background:var(--t-acc)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter"><path d="m12 2 9 5-9 5-9-5 9-5z"></path><path d="m3 12 9 5 9-5"></path><path d="m3 17 9 5 9-5"></path></svg>{{ tabNum }}</div>
+</div>
+<div style="height:2px;background:var(--t-fg);margin:0 14px;flex:none"></div>
+
+<sc-if value="{{ dropped }}" hint-placeholder-val="{{ false }}">
+<div style="background:var(--t-acc);color:var(--t-bg);font:600 11px/1.3 'IBM Plex Mono',monospace;letter-spacing:.04em;padding:9px 14px;display:flex;justify-content:space-between;align-items:center;flex:none">
+<span>MOSH · LINK LOST — RESUMING</span>
+<span onClick="{{ toggleDrop }}" style="cursor:pointer;text-decoration:underline">RESUME NOW</span>
+</div>
+</sc-if>
+
+<div style="flex:1;display:flex;flex-direction:column;min-height:0;position:relative">
+<sc-if value="{{ split }}" hint-placeholder-val="{{ false }}">
+<div style="flex:none;height:120px;overflow:hidden;padding:10px 14px;border-bottom:2px solid rgba(243,242,242,.5);opacity:.55">
+<div style="font:400 11px/1.5 'IBM Plex Mono',monospace;color:var(--t-dim);white-space:pre-wrap">edge-01 ~ $ htop
+  1[|||||||       28.4%]  Tasks: 84, 21 thr
+  2[||||          14.1%]  Load average: 0.42 0.31
+  Mem[||||||||   1.9G/8G]  Uptime: 41 days
+ PID USER  CPU% MEM% COMMAND
+ 991 root   6.2  1.1 /usr/bin/dockerd
+2140 caddy  1.4  0.6 caddy run</div>
+</div>
+</sc-if>
+
+<div ref="{{ scrollRef }}" style="flex:1;overflow:auto;padding:12px 30px 12px 14px;line-height:1.45;font-size:{{ fontPx }}">
+<sc-for list="{{ lines }}" as="l" hint-placeholder-count="8">
+<sc-if value="{{ l.isCmd }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;gap:7px;margin:9px 0 3px;font-family:'IBM Plex Mono',monospace">
+<span style="color:var(--t-acc);font-weight:600;flex:none">{{ l.prompt }}</span>
+<span style="color:var(--t-fg);font-weight:500;word-break:break-all">{{ l.text }}</span>
+</div>
+</sc-if>
+<sc-if value="{{ l.isOut }}" hint-placeholder-val="{{ false }}">
+<div style="color:var(--t-out);font-family:'IBM Plex Mono',monospace;white-space:pre-wrap;word-break:break-word">{{ l.text }}</div>
+</sc-if>
+<sc-if value="{{ l.isSys }}" hint-placeholder-val="{{ false }}">
+<div style="color:var(--t-faint);font-family:'IBM Plex Mono',monospace;white-space:pre-wrap;font-style:italic">{{ l.text }}</div>
+</sc-if>
+</sc-for>
+<div style="height:6px"></div>
+</div>
+
+<div style="position:absolute;right:6px;top:0;bottom:0;width:24px;display:flex;flex-direction:column;align-items:flex-end;gap:6px;padding-top:14px;pointer-events:auto">
+<div style="font:500 8px/1 'IBM Plex Mono',monospace;color:var(--t-faint);letter-spacing:.08em">RAIL</div>
+<sc-for list="{{ marks }}" as="m" hint-placeholder-count="4">
+<div onClick="{{ m.jump }}" title="{{ m.label }}" style="width:12px;height:2px;background:var(--t-dim2);cursor:pointer" style-hover="background:var(--t-acc);width:18px"></div>
+</sc-for>
+</div>
+</div>
+
+<div style="flex:none;border-top:1px solid var(--t-line2);padding:10px 14px 8px;position:relative">
+<div style="display:flex;gap:7px;align-items:baseline;font-family:'IBM Plex Mono',monospace;font-size:{{ fontPx }}">
+<span style="color:var(--t-acc);font-weight:600;flex:none">{{ prompt }}</span>
+<div style="position:relative;flex:1;min-width:0">
+<div style="white-space:pre;overflow:hidden">
+<span style="color:var(--t-fg)">{{ input }}</span><span style="color:var(--t-fg);background:var(--t-acc)">&nbsp;</span><span style="color:var(--t-faint)">{{ ghost }}</span>
+</div>
+<input ref="{{ inputRef }}" value="{{ input }}" onChange="{{ onType }}" onKeyDown="{{ onKeyDown }}" spellcheck="false" style="position:absolute;inset:-6px 0;width:100%;background:transparent;border:0;outline:none;color:transparent;caret-color:transparent;font-family:'IBM Plex Mono',monospace;font-size:{{ fontPx }};padding:0">
+</div>
+</div>
+</div>
+
+<div style="flex:none;display:flex;gap:7px;padding:8px 14px;overflow:auto;border-top:1px solid var(--t-line)">
+<sc-for list="{{ suggests }}" as="s" hint-placeholder-count="3">
+<div onClick="{{ s.pick }}" style="flex:none;font:400 11.5px/1 'IBM Plex Mono',monospace;color:var(--t-out);border:1px solid var(--t-line2);padding:8px 10px;cursor:pointer" style-hover="border-color:var(--t-acc);color:var(--t-fg)">{{ s.label }}</div>
+</sc-for>
+<div onClick="{{ openPalette }}" style="flex:none;display:flex;align-items:center;color:var(--t-bg);background:var(--t-fg);padding:8px 10px;cursor:pointer" style-hover="background:var(--t-acc)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter"><path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"></path></svg></div>
+</div>
+
+<div style="flex:none;background:var(--t-bar);border-top:1px solid var(--t-line2)">
+<div style="display:flex;gap:5px;padding:8px 10px 0">
+<sc-for list="{{ rowTabs }}" as="r" hint-placeholder-count="3">
+<div onClick="{{ r.pick }}" style="font:600 9.5px/1 'IBM Plex Mono',monospace;letter-spacing:.12em;padding:6px 9px;cursor:pointer;background:{{ r.bg }};color:{{ r.fg }}">{{ r.label }}</div>
+</sc-for>
+<div style="flex:1"></div>
+<div onClick="{{ toggleKb }}" style="font:600 9.5px/1 'IBM Plex Mono',monospace;letter-spacing:.12em;padding:6px 9px;color:var(--t-dim);cursor:pointer" style-hover="color:var(--t-fg)">{{ kbLabel }}</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(8,1fr);gap:5px;padding:8px 10px 10px">
+<sc-for list="{{ keys }}" as="k" hint-placeholder-count="8">
+<div onClick="{{ k.press }}" style="height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600;cursor:pointer;user-select:none;background:{{ k.bg }};color:{{ k.fg }}" style-active="background:var(--t-acc);color:var(--t-bg)">{{ k.label }}<span style="font-size:7.5px;letter-spacing:.06em;margin-top:2px;color:{{ k.subFg }}">{{ k.sub }}</span></div>
+</sc-for>
+</div>
+</div>
+
+<sc-if value="{{ kb }}" hint-placeholder-val="{{ true }}">
+<div style="flex:none">
+<x-import component-from-global-scope="IOSKeyboard" from="./ios-frame.jsx" dark="{{ isDark }}" hint-size="100%,291px"></x-import>
+</div>
+</sc-if>
+</sc-if>
+
+<sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+<div style="padding:58px 20px 14px;font:800 20px/1 'Archivo',sans-serif;letter-spacing:-.02em">SETTINGS</div>
+<div style="height:2px;background:var(--t-fg);margin:0 20px"></div>
+<div style="flex:1;overflow:auto;padding:18px 20px 24px">
+<div style="display:flex;align-items:center;gap:7px;color:var(--t-acc);margin-bottom:12px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><circle cx="12" cy="12" r="9"></circle><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor" stroke="none"></path></svg><span style="font:600 10px/1 'IBM Plex Mono',monospace;letter-spacing:.14em">THEME</span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--t-line2);margin-bottom:8px">
+<div onClick="{{ pickDark }}" style="padding:14px;font:600 12px/1 'IBM Plex Mono',monospace;letter-spacing:.08em;cursor:pointer;background:{{ darkBg }};color:{{ darkFg }}">BLACK</div>
+<div onClick="{{ pickLight }}" style="padding:14px;font:600 12px/1 'IBM Plex Mono',monospace;letter-spacing:.08em;cursor:pointer;background:{{ lightBg }};color:{{ lightFg }}">WHITE</div>
+</div>
+<div style="font:400 12.5px/1.55 'Archivo',sans-serif;color:var(--t-dim);margin:0 0 26px">Charcoal for night shifts, milk for sunlight. Taupe carries the accent on dark, mocha on light.</div>
+<div onClick="{{ replayWelcome }}" style="display:flex;justify-content:space-between;align-items:center;border:1px solid var(--t-line2);padding:14px;margin:0 0 26px;cursor:pointer" style-hover="border-color:var(--t-acc)">
+<div>
+<div style="font:600 14px/1.2 'Archivo',sans-serif">Show welcome again</div>
+<div style="font:400 11.5px/1.4 'Archivo',sans-serif;color:var(--t-dim);margin-top:3px">Normally only on first launch</div>
+</div>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t-acc)" stroke-width="2.5" stroke-linecap="square"><path d="M3 12a9 9 0 1 0 3-6.7"></path><polyline points="3 4 3 10 9 10"></polyline></svg>
+</div>
+
+<div style="display:flex;align-items:center;gap:7px;color:var(--t-acc);margin-bottom:12px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg><span style="font:600 10px/1 'IBM Plex Mono',monospace;letter-spacing:.14em">TYPE SIZE</span></div>
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+<div onClick="{{ fontDown }}" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--t-key);font:600 15px/1 'IBM Plex Mono',monospace;cursor:pointer" style-hover="background:var(--t-keyh)">A−</div>
+<div onClick="{{ fontUp }}" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--t-key);font:600 15px/1 'IBM Plex Mono',monospace;cursor:pointer" style-hover="background:var(--t-keyh)">A+</div>
+<div style="font:400 12px/1.4 'IBM Plex Mono',monospace;color:var(--t-dim)">{{ fontLabel }} · pinch in the session works too</div>
+</div>
+<div style="font:400 12.5px/1.55 'Archivo',sans-serif;color:var(--t-dim);margin:0 0 26px">Size changes reflow the buffer instead of scaling it, so lines never run off the right edge.</div>
+
+<div style="display:flex;align-items:center;gap:7px;color:var(--t-acc);margin-bottom:12px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><rect x="2" y="4" width="20" height="16"></rect><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M7 16h10"></path></svg><span style="font:600 10px/1 'IBM Plex Mono',monospace;letter-spacing:.14em">KEY BAR</span></div>
+<sc-for list="{{ settingRows }}" as="s" hint-placeholder-count="3">
+<div onClick="{{ s.toggle }}" style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--t-line);cursor:pointer">
+<div>
+<div style="font:600 14px/1.2 'Archivo',sans-serif">{{ s.name }}</div>
+<div style="font:400 11.5px/1.4 'Archivo',sans-serif;color:var(--t-dim);margin-top:3px">{{ s.desc }}</div>
+</div>
+<div style="width:44px;height:24px;display:flex;align-items:center;padding:3px;box-sizing:border-box;flex:none;background:{{ s.track }};justify-content:{{ s.justify }}"><div style="width:18px;height:18px;background:{{ s.knob }}"></div></div>
+</div>
+</sc-for>
+
+<div style="display:flex;align-items:center;gap:7px;color:var(--t-acc);margin:26px 0 12px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><circle cx="7.5" cy="15.5" r="4.5"></circle><path d="m10.7 12.3 8.3-8.3"></path><path d="m16 6 3 3"></path></svg><span style="font:600 10px/1 'IBM Plex Mono',monospace;letter-spacing:.14em">KEYS</span></div>
+<div style="border:1px solid var(--t-line2);padding:14px;display:flex;justify-content:space-between;align-items:center">
+<div>
+<div style="font:600 14px/1.2 'Archivo',sans-serif">id_ed25519</div>
+<div style="font:400 11px/1.4 'IBM Plex Mono',monospace;color:var(--t-dim);margin-top:4px">SHA256:9Xk…q1c · Secure Enclave</div>
+</div>
+<div style="font:600 11px/1 'IBM Plex Mono',monospace;color:var(--t-acc)">EXPORT</div>
+</div>
+
+<div style="display:flex;align-items:center;gap:7px;color:var(--t-acc);margin:26px 0 12px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><rect x="2" y="4" width="20" height="16"></rect><path d="M6 9h12M6 13h8"></path></svg><span style="font:600 10px/1 'IBM Plex Mono',monospace;letter-spacing:.14em">STORAGE</span></div>
+<div style="border:1px solid var(--t-line2);padding:14px;display:flex;gap:11px;align-items:flex-start">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t-acc)" stroke-width="2" stroke-linecap="square" style="flex:none;margin-top:1px"><rect x="6" y="2" width="12" height="20"></rect><line x1="10" y1="19" x2="14" y2="19"></line></svg>
+<div>
+<div style="font:600 14px/1.2 'Archivo',sans-serif">Connections stay on this phone</div>
+<div style="font:400 11.5px/1.5 'Archivo',sans-serif;color:var(--t-dim);margin-top:4px">Hosts, ports and titles are saved to local device storage; passwords and keys go to the system keychain. Nothing syncs to a server.</div>
+</div>
+</div>
+
+<div style="display:flex;align-items:center;gap:7px;color:var(--t-acc);margin:26px 0 12px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M12 3a9 9 0 1 0 9 9v-1"></path><circle cx="12" cy="12" r="3.5"></circle></svg><span style="font:600 10px/1 'IBM Plex Mono',monospace;letter-spacing:.14em">SUPPORT</span></div>
+<div style="border:1px solid var(--t-line2)">
+<div onClick="{{ tapMail }}" style="display:flex;align-items:center;gap:11px;padding:14px;border-bottom:1px solid var(--t-line);cursor:pointer" style-hover="background:var(--t-hover)">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" style="flex:none"><rect x="2" y="4" width="20" height="16"></rect><polyline points="2 6 12 13 22 6"></polyline></svg>
+<div style="flex:1;min-width:0">
+<div style="font:600 14px/1.2 'Archivo',sans-serif">Email</div>
+<div style="font:400 11px/1.4 'IBM Plex Mono',monospace;color:var(--t-dim);margin-top:3px">help@void.sh</div>
+</div>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--t-dim2)" stroke-width="2" stroke-linecap="square" style="flex:none"><path d="M7 17 17 7"></path><polyline points="8 7 17 7 17 16"></polyline></svg>
+</div>
+<div onClick="{{ tapGithub }}" style="display:flex;align-items:center;gap:11px;padding:14px;border-bottom:1px solid var(--t-line);cursor:pointer" style-hover="background:var(--t-hover)">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex:none"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+<div style="flex:1;min-width:0">
+<div style="font:600 14px/1.2 'Archivo',sans-serif">GitHub</div>
+<div style="font:400 11px/1.4 'IBM Plex Mono',monospace;color:var(--t-dim);margin-top:3px">Issues and changelog</div>
+</div>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--t-dim2)" stroke-width="2" stroke-linecap="square" style="flex:none"><path d="M7 17 17 7"></path><polyline points="8 7 17 7 17 16"></polyline></svg>
+</div>
+<div onClick="{{ tapTelegram }}" style="display:flex;align-items:center;gap:11px;padding:14px;border-bottom:1px solid var(--t-line);cursor:pointer" style-hover="background:var(--t-hover)">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" style="flex:none"><path d="M21.5 3.5 2.8 10.9l5.4 1.8 1.6 5.9 3-3.4 4.4 3.3Z"></path><path d="m8.2 12.7 9.3-6.6-5 8.1"></path></svg>
+<div style="flex:1;min-width:0">
+<div style="font:600 14px/1.2 'Archivo',sans-serif">Telegram</div>
+<div style="font:400 11px/1.4 'IBM Plex Mono',monospace;color:var(--t-dim);margin-top:3px">@voidterminal</div>
+</div>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--t-dim2)" stroke-width="2" stroke-linecap="square" style="flex:none"><path d="M7 17 17 7"></path><polyline points="8 7 17 7 17 16"></polyline></svg>
+</div>
+<div onClick="{{ tapInstagram }}" style="display:flex;align-items:center;gap:11px;padding:14px;cursor:pointer" style-hover="background:var(--t-hover)">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" style="flex:none"><rect x="2.5" y="2.5" width="19" height="19"></rect><circle cx="12" cy="12" r="4.2"></circle><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+<div style="flex:1;min-width:0">
+<div style="font:600 14px/1.2 'Archivo',sans-serif">Instagram</div>
+<div style="font:400 11px/1.4 'IBM Plex Mono',monospace;color:var(--t-dim);margin-top:3px">@void.terminal</div>
+</div>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--t-dim2)" stroke-width="2" stroke-linecap="square" style="flex:none"><path d="M7 17 17 7"></path><polyline points="8 7 17 7 17 16"></polyline></svg>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ showNav }}" hint-placeholder-val="{{ true }}">
+<div style="flex:none;display:grid;grid-template-columns:repeat(3,1fr);border-top:2px solid var(--t-fg);padding-bottom:26px;background:var(--t-bg)">
+<div onClick="{{ goHostsTab }}" style="padding:12px 0 10px;display:flex;flex-direction:column;align-items:center;gap:6px;font:600 10px/1 'IBM Plex Mono',monospace;letter-spacing:.12em;cursor:pointer;border-bottom:3px solid {{ navHostsRule }};color:{{ navHostsColor }}">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><rect x="2" y="3" width="20" height="8"></rect><rect x="2" y="13" width="20" height="8"></rect><line x1="6" y1="7" x2="6.01" y2="7"></line><line x1="6" y1="17" x2="6.01" y2="17"></line></svg>HOSTS</div>
+<div onClick="{{ goSessionTab }}" style="padding:12px 0 10px;display:flex;flex-direction:column;align-items:center;gap:6px;font:600 10px/1 'IBM Plex Mono',monospace;letter-spacing:.12em;cursor:pointer;border-bottom:3px solid transparent;color:var(--t-dim2)" style-hover="color:var(--t-fg)">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>SESSION</div>
+<div onClick="{{ goSettingsTab }}" style="padding:12px 0 10px;display:flex;flex-direction:column;align-items:center;gap:6px;font:600 10px/1 'IBM Plex Mono',monospace;letter-spacing:.12em;cursor:pointer;border-bottom:3px solid {{ navSetRule }};color:{{ navSetColor }}">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><line x1="21" y1="4" x2="14" y2="4"></line><line x1="10" y1="4" x2="3" y2="4"></line><line x1="21" y1="12" x2="12" y2="12"></line><line x1="8" y1="12" x2="3" y2="12"></line><line x1="21" y1="20" x2="16" y2="20"></line><line x1="12" y1="20" x2="3" y2="20"></line><line x1="14" y1="2" x2="14" y2="6"></line><line x1="8" y1="10" x2="8" y2="14"></line><line x1="16" y1="18" x2="16" y2="22"></line></svg>SETTINGS</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ showSwitcher }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ closeOverlay }}" style="position:absolute;inset:0;background:var(--t-scrim);z-index:80"></div>
+<div style="position:absolute;left:0;right:0;bottom:0;background:var(--t-bg);border-top:2px solid var(--t-fg);z-index:81;padding:18px 20px 34px;max-height:74%;overflow:auto">
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
+<div style="font:800 17px/1 'Archivo',sans-serif;letter-spacing:-.02em">SESSIONS</div>
+<div onClick="{{ closeOverlay }}" style="font:600 11px/1 'IBM Plex Mono',monospace;color:var(--t-dim);cursor:pointer">CLOSE</div>
+</div>
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+<div onClick="{{ t.pick }}" style="border:1px solid var(--t-line2);padding:13px 14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;cursor:pointer" style-hover="border-color:var(--t-acc)">
+<div style="min-width:0">
+<div style="font:600 14.5px/1.2 'Archivo',sans-serif">{{ t.name }}</div>
+<div style="font:400 11px/1.4 'IBM Plex Mono',monospace;color:var(--t-dim);margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.last }}</div>
+</div>
+<div onClick="{{ t.kill }}" style="font:600 12px/1 'IBM Plex Mono',monospace;color:var(--t-faint);padding:8px;cursor:pointer" style-hover="color:var(--t-acc)">✕</div>
+</div>
+</sc-for>
+<div onClick="{{ newTab }}" style="background:var(--t-acc);color:var(--t-bg);font:600 12px/1 'IBM Plex Mono',monospace;letter-spacing:.1em;padding:14px;cursor:pointer" style-hover="background:var(--t-acc2)">+ NEW WINDOW</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ showPalette }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ closeOverlay }}" style="position:absolute;inset:0;background:var(--t-scrim);z-index:80"></div>
+<div style="position:absolute;left:0;right:0;bottom:0;background:var(--t-bg);border-top:2px solid var(--t-fg);z-index:81;padding:18px 20px 34px;max-height:78%;overflow:auto">
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px">
+<div style="font:800 17px/1 'Archivo',sans-serif;letter-spacing:-.02em">SNIPPETS</div>
+<div onClick="{{ closeOverlay }}" style="font:600 11px/1 'IBM Plex Mono',monospace;color:var(--t-dim);cursor:pointer">CLOSE</div>
+</div>
+<div style="display:flex;align-items:center;gap:9px;background:var(--t-field);border:1px solid var(--t-line2);padding:0 12px;margin-bottom:14px">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A39382" stroke-width="2" stroke-linecap="square"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+<input value="{{ query }}" onChange="{{ onQuery }}" placeholder="filter…" spellcheck="false" style="flex:1;min-width:0;background:transparent;border:0;color:var(--t-fg);font-family:'IBM Plex Mono',monospace;font-size:13px;padding:12px 0;outline:none">
+</div>
+<sc-for list="{{ snippets }}" as="s" hint-placeholder-count="5">
+<div onClick="{{ s.run }}" style="padding:12px 0;border-bottom:1px solid var(--t-line);cursor:pointer;display:flex;justify-content:space-between;gap:12px;align-items:center" style-hover="background:var(--t-hover)">
+<div style="min-width:0">
+<div style="font:500 13px/1.3 'IBM Plex Mono',monospace;color:var(--t-fg);word-break:break-all">{{ s.cmd }}</div>
+<div style="font:400 11.5px/1.4 'Archivo',sans-serif;color:var(--t-dim);margin-top:3px">{{ s.desc }}</div>
+</div>
+<div style="font:600 9.5px/1 'IBM Plex Mono',monospace;letter-spacing:.1em;color:var(--t-faint);flex:none">{{ s.tag }}</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ showNewHost }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ closeOverlay }}" style="position:absolute;inset:0;background:var(--t-scrim);z-index:80"></div>
+<div style="position:absolute;left:0;right:0;bottom:0;background:var(--t-bg);border-top:2px solid var(--t-fg);z-index:81;padding:18px 20px 34px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px">
+<div style="font:800 17px/1 'Archivo',sans-serif;letter-spacing:-.02em">{{ sheetTitle }}</div>
+<div onClick="{{ closeOverlay }}" style="font:600 11px/1 'IBM Plex Mono',monospace;color:var(--t-dim);cursor:pointer">CANCEL</div>
+</div>
+<div style="font:600 9.5px/1 'IBM Plex Mono',monospace;letter-spacing:.12em;color:var(--t-dim);margin-bottom:6px">TITLE</div>
+<input value="{{ nhName }}" onChange="{{ onNhName }}" placeholder="edge-01" spellcheck="false" style="width:100%;box-sizing:border-box;background:var(--t-field);border:1px solid var(--t-line2);color:var(--t-fg);font-family:'Archivo',sans-serif;font-weight:600;font-size:15px;padding:13px;outline:none;margin-bottom:16px">
+<div style="font:600 9.5px/1 'IBM Plex Mono',monospace;letter-spacing:.12em;color:var(--t-dim);margin-bottom:6px">ADDRESS</div>
+<input value="{{ nhAddr }}" onChange="{{ onNhAddr }}" placeholder="user@host:22" spellcheck="false" style="width:100%;box-sizing:border-box;background:var(--t-field);border:1px solid var(--t-line2);color:var(--t-fg);font-family:'IBM Plex Mono',monospace;font-size:14px;padding:13px;outline:none;margin-bottom:16px">
+<div style="font:600 9.5px/1 'IBM Plex Mono',monospace;letter-spacing:.12em;color:var(--t-dim);margin-bottom:6px">AUTH</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:16px;border:1px solid var(--t-line2)">
+<sc-for list="{{ authOpts }}" as="a" hint-placeholder-count="2">
+<div onClick="{{ a.pick }}" style="padding:13px;text-align:left;font:600 12px/1 'IBM Plex Mono',monospace;cursor:pointer;background:{{ a.bg }};color:{{ a.fg }}">{{ a.label }}</div>
+</sc-for>
+</div>
+<sc-if value="{{ needsPass }}" hint-placeholder-val="{{ false }}">
+<div style="font:600 9.5px/1 'IBM Plex Mono',monospace;letter-spacing:.12em;color:var(--t-dim);margin-bottom:6px">PASSWORD</div>
+<div style="display:flex;align-items:center;gap:9px;background:var(--t-field);border:1px solid var(--t-line2);padding:0 13px;margin-bottom:16px">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A39382" stroke-width="2" stroke-linecap="square"><rect x="3" y="11" width="18" height="10"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+<input value="{{ nhPass }}" onChange="{{ onNhPass }}" type="{{ passType }}" placeholder="••••••••" spellcheck="false" style="flex:1;min-width:0;background:transparent;border:0;color:var(--t-fg);font-family:'IBM Plex Mono',monospace;font-size:14px;padding:13px 0;outline:none">
+<div onClick="{{ togglePassShow }}" style="font:600 9.5px/1 'IBM Plex Mono',monospace;letter-spacing:.1em;color:var(--t-acc);cursor:pointer;padding:6px 0">{{ passLabel }}</div>
+</div>
+<div onClick="{{ toggleSave }}" style="display:flex;align-items:center;gap:9px;margin-bottom:16px;cursor:pointer">
+<sc-if value="{{ savePass }}" hint-placeholder-val="{{ true }}"><div style="width:18px;height:18px;background:var(--t-acc);flex:none"></div></sc-if>
+<sc-if value="{{ noSavePass }}" hint-placeholder-val="{{ false }}"><div style="width:18px;height:18px;border:1.5px solid var(--t-dim2);box-sizing:border-box;flex:none"></div></sc-if>
+<div style="font:400 12.5px/1.3 'Archivo',sans-serif;color:var(--t-out)">Store in the keychain, unlock with Face ID</div>
+</div>
+</sc-if>
+<div onClick="{{ toggleMosh }}" style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px solid var(--t-line);border-bottom:1px solid var(--t-line);margin-bottom:18px;cursor:pointer">
+<div style="font:600 13.5px/1.2 'Archivo',sans-serif">Keep alive with mosh</div>
+<sc-if value="{{ moshOn }}" hint-placeholder-val="{{ true }}"><div style="width:44px;height:24px;background:var(--t-acc);display:flex;justify-content:flex-end;align-items:center;padding:3px;box-sizing:border-box"><div style="width:18px;height:18px;background:var(--t-bg)"></div></div></sc-if>
+<sc-if value="{{ moshOff }}" hint-placeholder-val="{{ false }}"><div style="width:44px;height:24px;background:var(--t-key);display:flex;align-items:center;padding:3px;box-sizing:border-box"><div style="width:18px;height:18px;background:var(--t-dim2)"></div></div></sc-if>
+</div>
+<div onClick="{{ saveHost }}" style="background:var(--t-acc);color:var(--t-bg);font:600 12px/1 'IBM Plex Mono',monospace;letter-spacing:.1em;padding:16px;cursor:pointer" style-hover="background:var(--t-acc2)">{{ saveLabel }}</div>
+<sc-if value="{{ isEditing }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ deleteHost }}" style="display:flex;align-items:center;gap:8px;border:1px solid var(--t-line2);color:var(--t-out);font:600 12px/1 'IBM Plex Mono',monospace;letter-spacing:.1em;padding:15px;margin-top:10px;cursor:pointer" style-hover="border-color:var(--t-acc);color:var(--t-acc)">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M6 6v14h12V6"></path><path d="M10 11v5M14 11v5"></path></svg>
+DELETE CONNECTION</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:14px;right:14px;bottom:44px;background:var(--t-fg);color:var(--t-bg);font:600 11.5px/1.3 'IBM Plex Mono',monospace;padding:12px 14px;z-index:90">{{ toast }}</div>
+</sc-if>
+
+</div>
+</x-import>
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:900,&quot;height&quot;:1000}}">
+const HOSTS = [
+  { name: 'edge-01', addr: 'root@edge-01.fra.void.sh:22', tags: ['MOSH', 'TMUX', 'ED25519'], meta: 'now', live: true, icon: 'cloud' },
+  { name: 'build-runner', addr: 'ci@10.0.4.19:2222', tags: ['SSH', 'AGENT'], meta: '2h', live: false, icon: 'ci' },
+  { name: 'pi-home', addr: 'pi@192.168.1.14:22', tags: ['MOSH', 'LAN'], meta: '1d', live: false, icon: 'cpu' },
+  { name: 'db-replica-3', addr: 'ops@db3.internal:22', tags: ['SSH', 'JUMP'], meta: '4d', live: false, icon: 'db' },
+];
+
+const SNIPPETS = [
+  { cmd: 'tmux attach -t main', desc: 'Reattach the long-running session', tag: 'TMUX' },
+  { cmd: 'journalctl -u caddy -n 80 --no-pager', desc: 'Last 80 lines of the web server unit', tag: 'LOGS' },
+  { cmd: 'docker compose up -d --build', desc: 'Rebuild and restart the stack', tag: 'DEPLOY' },
+  { cmd: 'pkg upgrade -y', desc: 'Update every Termux package', tag: 'PKG' },
+  { cmd: 'df -h | sort -k5 -r | head', desc: 'Fullest mounts first', tag: 'DISK' },
+  { cmd: 'systemctl restart caddy', desc: 'Bounce the reverse proxy', tag: 'OPS' },
+];
+
+const KNOWN = ['ls -la', 'ls', 'uname -a', 'uptime', 'df -h', 'htop', 'tmux ls', 'tmux attach -t main',
+  'pkg install neovim', 'pkg upgrade -y', 'git status', 'journalctl -u caddy -n 80 --no-pager',
+  'docker compose up -d --build', 'systemctl restart caddy', 'cd /srv/void', 'cat /etc/os-release'];
+
+const OUT = {
+  'ls': 'bin   etc   home  opt   srv   var',
+  'ls -la': 'drwxr-xr-x  14 root root  4096 Aug 30 02:11 .\ndrwxr-xr-x   1 root root  4096 Jul 02 09:40 ..\n-rw-------   1 root root  8213 Aug 31 14:02 .bash_history\ndrwx------   2 root root  4096 Jun 11 08:22 .ssh\ndrwxr-xr-x   6 root root  4096 Aug 29 19:55 srv',
+  'uname -a': 'Linux edge-01 6.6.30-arm64 #1 SMP PREEMPT aarch64 GNU/Linux',
+  'uptime': ' 15:58:41 up 41 days,  3:12,  1 user,  load average: 0.42, 0.31, 0.28',
+  'df -h': 'Filesystem      Size  Used Avail Use% Mounted on\n/dev/vda1        79G   38G   38G  50% /\ntmpfs           3.9G     0  3.9G   0% /dev/shm\n/dev/vdb1       500G  411G   64G  87% /srv',
+  'htop': '[alt-screen] htop 3.3.0 — swipe down with two fingers to leave',
+  'tmux ls': 'main: 3 windows (created Mon Jul 21 08:14:02 2026) (attached)\nbuild: 1 windows (created Fri Aug 28 22:03:19 2026)',
+  'git status': "On branch main\nYour branch is up to date with 'origin/main'.\n\nnothing to commit, working tree clean",
+  'cat /etc/os-release': 'PRETTY_NAME="Debian GNU/Linux 13 (trixie)"\nID=debian\nVERSION_ID="13"',
+  'pkg install neovim': 'Checking availability of current mirror: ok\nReading package lists... Done\nThe following NEW packages will be installed:\n  libluajit neovim tree-sitter\nAfter this operation, 24.1 MB of additional disk space will be used.\nGet:1 termux-main neovim aarch64 0.10.2 [9,204 kB]\nunpacking neovim (0.10.2) ...\nSetting up neovim (0.10.2) ...',
+  'pkg upgrade -y': 'Reading package lists... Done\n412 packages, 6 upgradable\nFetched 18.4 MB in 3s\nAll packages are up to date.',
+};
+
+const ROWS = [
+  { label: 'MOD', keys: [
+    { label: 'ESC', sub: '', a: 'esc' }, { label: '⇥', sub: 'TAB', a: 'tab' },
+    { label: 'CTRL', sub: 'HOLD', a: 'ctrl' }, { label: 'ALT', sub: 'HOLD', a: 'alt' },
+    { label: '^C', sub: 'KILL', a: 'sigint' }, { label: '^D', sub: 'EOF', a: 'eof' },
+    { label: '^L', sub: 'CLR', a: 'clear' }, { label: '^Z', sub: 'BG', a: 'bg' }] },
+  { label: 'NAV', keys: [
+    { label: '←', sub: '', a: 'noop' }, { label: '↓', sub: '', a: 'histdown' },
+    { label: '↑', sub: 'HIST', a: 'histup' }, { label: '→', sub: '', a: 'accept' },
+    { label: '⇱', sub: 'HOME', a: 'noop' }, { label: '⇲', sub: 'END', a: 'noop' },
+    { label: '⇞', sub: 'PGUP', a: 'pgup' }, { label: '⇟', sub: 'PGDN', a: 'pgdn' }] },
+  { label: 'TMUX', keys: [
+    { label: '⌃B', sub: 'PFX', a: 'noop' }, { label: '⊟', sub: 'SPLIT', a: 'split' },
+    { label: '⊞', sub: 'VSPL', a: 'split' }, { label: '⇄', sub: 'PANE', a: 'noop' },
+    { label: '＋', sub: 'WIN', a: 'newtab' }, { label: '⌕', sub: 'COPY', a: 'copy' },
+    { label: '⤢', sub: 'ZOOM', a: 'zoom' }, { label: '⏻', sub: 'DTCH', a: 'detach' }] },
+];
+
+class Component extends DCLogic {
+  state = {
+    screen: (() => { try { return localStorage.getItem('void.welcomed') ? 'hosts' : 'welcome'; } catch (e) { return 'welcome'; } })(), overlay: null, keyRow: 0, ctrl: false, alt: false,
+    input: '', hist: [], histIdx: -1, font: 13, split: false, kb: true, dropped: false,
+    tabs: [{ name: 'edge-01 · main', host: 'edge-01', last: 'uname -a' }], active: 0, toast: null,
+    query: '', nhAddr: '', nhName: '', nhPass: '', auth: 0, mosh: true, opts: [true, true, false],
+    hosts: (() => { try { const r = JSON.parse(localStorage.getItem('void.hosts')); return Array.isArray(r) && r.length ? r : HOSTS.slice(); } catch (e) { return HOSTS.slice(); } })(), editing: null, passShow: false, savePass: true, theme: 'dark',
+    lines: [
+      { k: 'sys', text: 'mosh 1.4.0 — session resumed, 0 bytes lost' },
+      { k: 'cmd', prompt: 'edge-01 ~ $', text: 'uname -a' },
+      { k: 'out', text: OUT['uname -a'] },
+      { k: 'cmd', prompt: 'edge-01 ~ $', text: 'tmux ls' },
+      { k: 'out', text: OUT['tmux ls'] },
+    ],
+  };
+  scrollRef = React.createRef();
+  inputRef = React.createRef();
+
+  componentDidUpdate() {
+    if (this._lastLines !== this.state.lines) {
+      this._lastLines = this.state.lines;
+      const el = this.scrollRef.current;
+      if (el) el.scrollTop = el.scrollHeight;
+    }
+  }
+  componentDidMount() {
+    this._lastLines = this.state.lines;
+    const el = this.scrollRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }
+  componentDidUpdate(_, prev) {
+    if (prev && prev.hosts !== this.state.hosts) {
+      try { localStorage.setItem('void.hosts', JSON.stringify(this.state.hosts)); } catch (e) {}
+    }
+  }
+  flash(t) {
+    clearTimeout(this._t);
+    this.setState({ toast: t });
+    this._t = setTimeout(() => this.setState({ toast: null }), 1900);
+  }
+  push(items) { this.setState(s => ({ lines: s.lines.concat(items) })); }
+  prompt() {
+    const t = this.state.tabs[this.state.active];
+    const h = t && t.host ? t.host : 'edge-01';
+    return h === 'termux' ? '~ $' : h + ' ~ $';
+  }
+
+  run(raw) {
+    const cmd = (raw || '').trim();
+    if (!cmd) { this.push([{ k: 'cmd', prompt: this.prompt(), text: '' }]); return; }
+    const add = [{ k: 'cmd', prompt: this.prompt(), text: cmd }];
+    if (cmd === 'clear') { this.setState({ lines: [], input: '', histIdx: -1 }); return; }
+    if (OUT[cmd]) add.push({ k: 'out', text: OUT[cmd] });
+    else if (cmd.indexOf('cd ') === 0) add.push({ k: 'sys', text: 'now in ' + cmd.slice(3) });
+    else if (cmd.indexOf('tmux attach') === 0) add.push({ k: 'sys', text: '[attached to session main — 3 windows]' });
+    else add.push({ k: 'out', text: 'zsh: command not found: ' + cmd.split(' ')[0] });
+    this.setState(s => ({
+      lines: s.lines.concat(add), input: '', histIdx: -1,
+      hist: [cmd].concat(s.hist.filter(h => h !== cmd)).slice(0, 30),
+      tabs: s.tabs.map((t, i) => i === s.active ? { ...t, last: cmd } : t),
+    }));
+  }
+
+  ghostFor(input) {
+    if (!input) return '';
+    const pool = this.state.hist.concat(KNOWN);
+    const hit = pool.find(c => c.indexOf(input) === 0 && c !== input);
+    return hit ? hit.slice(input.length) : '';
+  }
+
+  keyAction(a) {
+    const s = this.state;
+    if (a === 'ctrl') return this.setState({ ctrl: !s.ctrl });
+    if (a === 'alt') return this.setState({ alt: !s.alt });
+    if (a === 'clear') return this.setState({ lines: [], input: '' });
+    if (a === 'sigint') { this.push([{ k: 'cmd', prompt: this.prompt(), text: s.input + '^C' }]); return this.setState({ input: '' }); }
+    if (a === 'eof') return this.flash('^D — shell would exit');
+    if (a === 'bg') return this.flash('[1]+  Stopped   moved to background');
+    if (a === 'esc') { this.setState({ input: '' }); return this.flash('ESC'); }
+    if (a === 'tab' || a === 'accept') return this.setState(st => ({ input: st.input + this.ghostFor(st.input) }));
+    if (a === 'histup') {
+      const i = Math.min(s.histIdx + 1, s.hist.length - 1);
+      if (i < 0) return this.flash('no history yet');
+      return this.setState({ histIdx: i, input: s.hist[i] });
+    }
+    if (a === 'histdown') {
+      const i = s.histIdx - 1;
+      return this.setState({ histIdx: i, input: i < 0 ? '' : s.hist[i] });
+    }
+    if (a === 'pgup' || a === 'pgdn') {
+      const el = this.scrollRef.current;
+      if (el) el.scrollTop += (a === 'pgup' ? -1 : 1) * el.clientHeight * 0.8;
+      return;
+    }
+    if (a === 'split') return this.setState({ split: !s.split });
+    if (a === 'zoom') return this.flash('pane zoomed');
+    if (a === 'copy') return this.flash('copy-mode — drag to select, tap to yank');
+    if (a === 'detach') return this.flash('[detached from session main]');
+    if (a === 'newtab') return this.addTab();
+    this.flash('sent');
+  }
+
+  addTab() {
+    this.setState(s => ({
+      tabs: s.tabs.concat([{ name: (s.tabs[s.active] ? s.tabs[s.active].host : 'edge-01') + ' · win ' + (s.tabs.length + 1), host: s.tabs[s.active] ? s.tabs[s.active].host : 'edge-01', last: 'new window' }]),
+      active: s.tabs.length, overlay: null, screen: 'session',
+      lines: [{ k: 'sys', text: 'tmux: new window created' }],
+    }));
+  }
+
+  connect(h) {
+    this.setState({
+      screen: 'session', overlay: null, split: false, dropped: false,
+      tabs: [{ name: h.name + ' · main', host: h.name, last: 'connected' }], active: 0,
+      lines: [
+        { k: 'sys', text: 'ssh ' + h.addr },
+        { k: 'sys', text: 'authenticated with id_ed25519 (Secure Enclave)' },
+        { k: 'out', text: 'Last login: Sun Aug 31 09:12:44 2026 from 100.64.2.9' },
+        { k: 'cmd', prompt: h.name + ' ~ $', text: 'uptime' },
+        { k: 'out', text: OUT['uptime'] },
+        { k: 'cmd', prompt: h.name + ' ~ $', text: 'tmux ls' },
+        { k: 'out', text: OUT['tmux ls'] },
+      ],
+    });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const nav = [['hosts', 'HOSTS'], ['session', 'SESSION'], ['settings', 'SETTINGS']];
+    const rowKeys = ROWS[s.keyRow].keys;
+    const marks = [];
+    s.lines.forEach((l, i) => {
+      if (l.k === 'cmd' && l.text) marks.push({
+        label: l.text,
+        jump: () => { const el = this.scrollRef.current; if (el) el.scrollTop = (i / s.lines.length) * el.scrollHeight; },
+      });
+    });
+    const q = s.query.toLowerCase();
+    const acc = s.theme === 'dark' ? '#A39382' : '#685D54';
+    const accFg = s.theme === 'dark' ? '#232323' : '#FBF7F4';
+    const fg = s.theme === 'dark' ? '#FBF7F4' : '#232323';
+    const dim = s.theme === 'dark' ? '#A39382' : '#685D54';
+    const keyBg = s.theme === 'dark' ? '#3b3835' : '#E5DED2';
+    return {
+      isWelcome: s.screen === 'welcome',
+      start: () => { try { localStorage.setItem('void.welcomed', '1'); } catch (e) {} this.setState({ screen: 'hosts' }); },
+      tapMail: () => this.flash('opens mail composer → help@void.sh'),
+      tapGithub: () => this.flash('opens github.com/void-sh/terminal'),
+      tapTelegram: () => this.flash('opens Telegram → @voidterminal'),
+      tapInstagram: () => this.flash('opens Instagram → @void.terminal'),
+      replayWelcome: () => { try { localStorage.removeItem('void.welcomed'); } catch (e) {} this.setState({ screen: 'welcome' }); },
+      isHosts: s.screen === 'hosts', isSession: s.screen === 'session', isSettings: s.screen === 'settings',
+      showNav: s.screen !== 'session' && s.screen !== 'welcome',
+      showSwitcher: s.overlay === 'switcher', showPalette: s.overlay === 'palette', showNewHost: s.overlay === 'newhost',
+      hosts: s.hosts.map((h, i) => ({
+        ...h, idle: !h.live,
+        kCloud: h.icon === 'cloud', kCi: h.icon === 'ci', kCpu: h.icon === 'cpu', kDb: h.icon === 'db',
+        kServer: ['cloud', 'ci', 'cpu', 'db'].indexOf(h.icon) < 0,
+        dotBg: h.live ? acc : 'transparent', dotLine: h.live ? acc : '#A39382',
+        open: () => this.connect(h),
+        edit: e => {
+          e.stopPropagation();
+          this.setState({ overlay: 'newhost', editing: i, nhName: h.name, nhAddr: h.addr, nhPass: h.pass || '', auth: h.pass ? 1 : 0, mosh: h.tags.indexOf('MOSH') >= 0 });
+        },
+      })),
+      openLocal: () => this.connect({ name: 'termux', addr: 'local', tags: [] }),
+      navItems: nav.map(([k, label]) => ({ label, on: s.screen === k, off: s.screen !== k, go: () => this.setState({ screen: k, overlay: null }) })),
+      goHostsTab: () => this.setState({ screen: 'hosts', overlay: null }),
+      goSessionTab: () => this.setState({ screen: 'session', overlay: null }),
+      goSettingsTab: () => this.setState({ screen: 'settings', overlay: null }),
+      navHostsColor: s.screen === 'hosts' ? acc : '#A39382',
+      navHostsRule: s.screen === 'hosts' ? acc : 'transparent',
+      navSetColor: s.screen === 'settings' ? acc : '#A39382',
+      navSetRule: s.screen === 'settings' ? acc : 'transparent',
+      tabNum: String(s.tabs.length),
+      activeName: s.tabs[s.active] ? s.tabs[s.active].name : 'session',
+      activeMeta: s.dropped ? 'mosh · reconnecting…' : (s.ctrl ? 'CTRL armed' : (s.alt ? 'ALT armed' : 'mosh · 24ms · tmux main')),
+      tabCount: s.tabs.length + '⧉',
+      prompt: this.prompt(),
+      fontPx: s.font + 'px',
+      input: s.input, ghost: this.ghostFor(s.input),
+      lines: s.lines.map(l => ({ ...l, isCmd: l.k === 'cmd', isOut: l.k === 'out', isSys: l.k === 'sys' })),
+      marks,
+      scrollRef: this.scrollRef, inputRef: this.inputRef,
+      onType: e => this.setState({ input: e.target.value }),
+      onKeyDown: e => {
+        if (e.key === 'Enter') { e.preventDefault(); this.run(s.input); }
+        else if (e.key === 'Tab') { e.preventDefault(); this.keyAction('tab'); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); this.keyAction('histup'); }
+        else if (e.key === 'ArrowDown') { e.preventDefault(); this.keyAction('histdown'); }
+      },
+      suggests: [
+        { label: 'tmux attach -t main', pick: () => this.setState({ input: 'tmux attach -t main' }) },
+        { label: 'df -h', pick: () => this.setState({ input: 'df -h' }) },
+        { label: 'pkg upgrade -y', pick: () => this.setState({ input: 'pkg upgrade -y' }) },
+        { label: 'journalctl -u caddy', pick: () => this.setState({ input: 'journalctl -u caddy -n 80 --no-pager' }) },
+      ],
+      rowTabs: ROWS.map((r, i) => ({
+        label: r.label, bg: s.keyRow === i ? acc : 'transparent', fg: s.keyRow === i ? accFg : dim,
+        pick: () => this.setState({ keyRow: i }),
+      })),
+      keys: rowKeys.map(k => {
+        const on = (k.a === 'ctrl' && s.ctrl) || (k.a === 'alt' && s.alt);
+        return {
+          label: k.label, sub: k.sub,
+          bg: on ? acc : keyBg, fg: on ? accFg : fg, subFg: on ? accFg : dim,
+          press: () => this.keyAction(k.a),
+        };
+      }),
+      kb: s.kb, kbLabel: s.kb ? 'HIDE KB' : 'SHOW KB', toggleKb: () => this.setState({ kb: !s.kb }),
+      split: s.split, toggleSplit: () => this.setState({ split: !s.split }),
+      dropped: s.dropped,
+      toggleDrop: () => { this.setState({ dropped: !s.dropped }); if (s.dropped) this.push([{ k: 'sys', text: 'mosh: connection resumed after 8s — buffer intact' }]); },
+      goHosts: () => this.setState({ screen: 'hosts' }),
+      openSwitcher: () => this.setState({ overlay: 'switcher' }),
+      openPalette: () => this.setState({ overlay: 'palette', query: '' }),
+      openNewHost: () => this.setState({ overlay: 'newhost', editing: null, nhName: '', nhAddr: '', nhPass: '', auth: 0, mosh: true }),
+      closeOverlay: () => this.setState({ overlay: null }),
+      tabs: s.tabs.map((t, i) => ({
+        name: t.name, last: '$ ' + t.last,
+        pick: () => this.setState({ active: i, overlay: null, screen: 'session' }),
+        kill: e => { e.stopPropagation(); this.setState(st => ({ tabs: st.tabs.length > 1 ? st.tabs.filter((_, j) => j !== i) : st.tabs, active: 0 })); },
+      })),
+      newTab: () => this.addTab(),
+      query: s.query, onQuery: e => this.setState({ query: e.target.value }),
+      snippets: SNIPPETS.filter(x => !q || (x.cmd + x.desc).toLowerCase().indexOf(q) >= 0)
+        .map(x => ({ ...x, run: () => { this.setState({ overlay: null, screen: 'session' }); this.run(x.cmd); } })),
+      hasToast: !!s.toast, toast: s.toast,
+      fontLabel: s.font + 'px',
+      fontUp: () => this.setState({ font: Math.min(20, s.font + 1) }),
+      fontDown: () => this.setState({ font: Math.max(9, s.font - 1) }),
+      settingRows: [
+        { name: 'Sticky modifiers', desc: 'Tap latches for one key, double-tap locks' },
+        { name: 'Haptics on key bar', desc: 'Short tick on every accessory key' },
+        { name: 'Swipe rows', desc: 'Swipe the bar sideways to change row' },
+      ].map((r, i) => ({
+        ...r,
+        track: s.opts[i] ? acc : keyBg, knob: s.opts[i] ? accFg : '#A39382',
+        justify: s.opts[i] ? 'flex-end' : 'flex-start',
+        toggle: () => this.setState(st => ({ opts: st.opts.map((v, j) => j === i ? !v : v) })),
+      })),
+      nhAddr: s.nhAddr, onNhAddr: e => this.setState({ nhAddr: e.target.value }),
+      nhName: s.nhName, onNhName: e => this.setState({ nhName: e.target.value }),
+      nhPass: s.nhPass, onNhPass: e => this.setState({ nhPass: e.target.value }),
+      needsPass: s.auth === 1,
+      passType: s.passShow ? 'text' : 'password',
+      passLabel: s.passShow ? 'HIDE' : 'SHOW',
+      togglePassShow: () => this.setState({ passShow: !s.passShow }),
+      savePass: s.savePass, noSavePass: !s.savePass, toggleSave: () => this.setState({ savePass: !s.savePass }),
+      isEditing: s.editing !== null,
+      sheetTitle: s.editing !== null ? 'EDIT CONNECTION' : 'NEW CONNECTION',
+      saveLabel: s.editing !== null ? 'SAVE CHANGES' : 'SAVE & CONNECT',
+      authOpts: ['KEY · id_ed25519', 'PASSWORD'].map((label, i) => ({
+        label, bg: s.auth === i ? acc : 'transparent', fg: s.auth === i ? accFg : fg,
+        pick: () => this.setState({ auth: i }),
+      })),
+      moshOn: s.mosh, moshOff: !s.mosh, toggleMosh: () => this.setState({ mosh: !s.mosh }),
+      themeOpts: [['dark', 'BLACK'], ['light', 'WHITE']].map(([k, label]) => ({ label, on: s.theme === k, off: s.theme !== k, pick: () => this.setState({ theme: k }) })),
+      pickDark: () => this.setState({ theme: 'dark' }),
+      pickLight: () => this.setState({ theme: 'light' }),
+      darkBg: s.theme === 'dark' ? '#A39382' : 'transparent',
+      darkFg: s.theme === 'dark' ? '#232323' : '#685D54',
+      lightBg: s.theme === 'light' ? '#685D54' : 'transparent',
+      lightFg: s.theme === 'light' ? '#FBF7F4' : '#E5DED2',
+      isDark: s.theme === 'dark',
+      logoSrc: s.theme === 'dark' ? 'assets/void-white.png' : 'assets/void-black.png',
+      tBg: s.theme === 'dark' ? '#232323' : '#FBF7F4',
+      tFg: fg,
+      tOut: s.theme === 'dark' ? '#E5DED2' : '#685D54',
+      tDim: dim,
+      tDim2: '#A39382',
+      tFaint: s.theme === 'dark' ? '#685D54' : '#A39382',
+      tKey: keyBg,
+      tKeyH: s.theme === 'dark' ? '#4c4842' : '#D8CFC0',
+      tBar: s.theme === 'dark' ? '#2b2a28' : '#F1EBE3',
+      tField: s.theme === 'dark' ? '#2b2a28' : '#ffffff',
+      tLine: s.theme === 'dark' ? 'rgba(251,247,244,.16)' : 'rgba(35,35,35,.16)',
+      tLine2: s.theme === 'dark' ? 'rgba(251,247,244,.28)' : 'rgba(35,35,35,.28)',
+      tScrim: s.theme === 'dark' ? 'rgba(35,35,35,.88)' : 'rgba(251,247,244,.9)',
+      tHover: s.theme === 'dark' ? 'rgba(251,247,244,.05)' : 'rgba(35,35,35,.05)',
+      tAcc: acc,
+      tAcc2: s.theme === 'dark' ? '#8d7d6d' : '#4f463f',
+      deleteHost: () => {
+        this.setState(st => ({ hosts: st.hosts.filter((_, j) => j !== st.editing), overlay: null, editing: null }));
+        this.flash('connection deleted');
+      },
+      saveHost: () => {
+        const name = s.nhName.trim() || (s.nhAddr ? s.nhAddr.split('@').pop().split(':')[0] : 'new-host');
+        const addr = s.nhAddr.trim() || 'user@host:22';
+        const tags = [s.auth === 1 ? 'PASSWORD' : 'ED25519'].concat(s.mosh ? ['MOSH'] : []);
+        const rec = { name, addr, tags, meta: 'now', live: false, pass: s.auth === 1 ? s.nhPass : '' };
+        if (s.editing !== null) {
+          this.setState(st => ({ hosts: st.hosts.map((h, j) => j === st.editing ? { ...h, ...rec, live: h.live, meta: h.meta } : h), overlay: null, editing: null }));
+          this.flash('connection updated');
+        } else {
+          this.setState(st => ({ hosts: [rec].concat(st.hosts), overlay: null }));
+          this.connect(rec);
+        }
+      },
+    };
+  }
+}
+
+</script>
+</body>
+</html>
