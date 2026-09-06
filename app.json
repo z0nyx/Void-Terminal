@@ -7,7 +7,6 @@
     "icon": "./assets/app-icon.png",
     "scheme": "voidterminal",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "android": {
       "package": "sh.voidterminal.app",
       "adaptiveIcon": {
