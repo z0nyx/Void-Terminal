@@ -1,10 +1,12 @@
 import React from "react";
-import { View, Image, Pressable, StyleSheet } from "react-native";
+import { View, Image, Pressable, Linking, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AppText } from "../components/ui/Text";
 import { IconArrowRight } from "../components/ui/icons";
 import { useTheme } from "../lib/theme/useTheme";
 import { useSettingsStore } from "../lib/storage/settingsStore";
+
+const REPO_URL = "https://github.com/z0nyx/Void-Terminal";
 
 const logos = {
   dark: require("../../assets/void-white.png"),
@@ -73,6 +75,30 @@ export function WelcomeScreen() {
         </AppText>
         <IconArrowRight color={theme.colors.bg} />
       </Pressable>
+
+      <AppText
+        weight="regular"
+        color={theme.colors.dim2}
+        style={styles.legalLine}
+      >
+        By continuing, you agree to the{" "}
+        <AppText
+          weight="semiBold"
+          color={theme.colors.dim}
+          onPress={() => Linking.openURL(`${REPO_URL}/blob/main/legal/terms.md`)}
+        >
+          Terms of Service
+        </AppText>{" "}
+        and{" "}
+        <AppText
+          weight="semiBold"
+          color={theme.colors.dim}
+          onPress={() => Linking.openURL(`${REPO_URL}/blob/main/legal/privacy.md`)}
+        >
+          Privacy Policy
+        </AppText>
+        .
+      </AppText>
     </View>
   );
 }
@@ -99,5 +125,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingVertical: 19,
+  },
+  legalLine: {
+    fontSize: 11.5,
+    lineHeight: 17,
+    textAlign: "center",
+    marginTop: 14,
   },
 });

@@ -20,10 +20,9 @@ import {
   IconPhone,
   IconSupport,
   IconExternal,
-  IconMail,
   IconGithub,
-  IconTelegram,
-  IconInstagram,
+  IconLock,
+  IconTrash,
 } from "../components/ui/icons";
 import { useTheme } from "../lib/theme/useTheme";
 import {
@@ -31,35 +30,42 @@ import {
   type KeyBarOptions,
 } from "../lib/storage/settingsStore";
 import * as keychain from "../lib/storage/keychain";
+import { wipeAllData } from "../lib/factoryReset";
+
+const REPO_URL = "https://github.com/z0nyx/Void-Terminal";
 
 const SUPPORT_LINKS = [
-  {
-    key: "mail",
-    Icon: IconMail,
-    label: "Email",
-    value: "help@void.sh",
-    url: "mailto:help@void.sh",
-  },
   {
     key: "github",
     Icon: IconGithub,
     label: "GitHub",
-    value: "Issues and changelog",
-    url: "https://github.com/void-sh/terminal",
+    value: "Issues, source, changelog",
+    url: REPO_URL,
   },
+] as const;
+
+const LEGAL_LINKS = [
+  { key: "privacy", label: "Privacy Policy", file: "privacy.md" },
+  { key: "terms", label: "Terms of Service", file: "terms.md" },
   {
-    key: "telegram",
-    Icon: IconTelegram,
-    label: "Telegram",
-    value: "@voidterminal",
-    url: "https://t.me/voidterminal",
+    key: "account-deletion",
+    label: "Account Deletion",
+    file: "account-deletion.md",
   },
+  { key: "data-deletion", label: "Data Deletion", file: "data-deletion.md" },
   {
-    key: "instagram",
-    Icon: IconInstagram,
-    label: "Instagram",
-    value: "@void.terminal",
-    url: "https://instagram.com/void.terminal",
+    key: "acceptable-use",
+    label: "Acceptable Use Policy",
+    file: "community-guidelines.md",
+  },
+  { key: "disclaimer", label: "Disclaimer", file: "disclaimer.md" },
+  { key: "cookies", label: "Cookie Policy", file: "cookie-policy.md" },
+  { key: "copyright", label: "Copyright / DMCA", file: "copyright-policy.md" },
+  { key: "legal-notice", label: "Legal Notice", file: "legal-notice.md" },
+  {
+    key: "open-source",
+    label: "Open Source Licenses",
+    file: "open-source.md",
   },
 ] as const;
 
@@ -106,6 +112,24 @@ export function SettingsScreen() {
     } catch (e: any) {
       Alert.alert("Could not export key", e?.message ?? String(e));
     }
+  };
+
+  const confirmDeleteAllData = () => {
+    Alert.alert(
+      "Delete all data?",
+      "Removes every saved host, password, private key, and preference from this device. This can't be undone.",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete everything",
+          style: "destructive",
+          onPress: async () => {
+            await wipeAllData();
+            setFingerprint(null);
+          },
+        },
+      ],
+    );
   };
 
   return (
@@ -307,6 +331,20 @@ export function SettingsScreen() {
             </AppText>
           </View>
         </View>
+        <Pressable
+          onPress={confirmDeleteAllData}
+          style={[styles.card, { borderColor: c.line2, marginTop: 8 }]}
+        >
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+            <IconTrash color={c.dim} />
+            <AppText weight="semiBold" size={14} color={c.fg}>
+              Delete all data
+            </AppText>
+          </View>
+          <AppText weight="semiBold" mono size={11} color={c.acc}>
+            DELETE
+          </AppText>
+        </Pressable>
 
         <SectionHeader
           Icon={IconSupport}
@@ -340,6 +378,37 @@ export function SettingsScreen() {
                   style={{ marginTop: 3 }}
                 >
                   {value}
+                </AppText>
+              </View>
+              <IconExternal color={c.dim2} />
+            </Pressable>
+          ))}
+        </View>
+
+        <SectionHeader
+          Icon={IconLock}
+          label="LEGAL"
+          c={c}
+          style={{ marginTop: 26 }}
+        />
+        <View style={[styles.supportCard, { borderColor: c.line2 }]}>
+          {LEGAL_LINKS.map(({ key, label, file }, i) => (
+            <Pressable
+              key={key}
+              onPress={() =>
+                Linking.openURL(`${REPO_URL}/blob/main/legal/${file}`)
+              }
+              style={[
+                styles.supportRow,
+                i < LEGAL_LINKS.length - 1 && {
+                  borderBottomWidth: 1,
+                  borderBottomColor: c.line,
+                },
+              ]}
+            >
+              <View style={{ flex: 1 }}>
+                <AppText weight="semiBold" size={14} color={c.fg}>
+                  {label}
                 </AppText>
               </View>
               <IconExternal color={c.dim2} />

@@ -100,6 +100,10 @@ export interface IdentityKey {
  * export) — see modules/void-ssh. Until that module lands this throws, so
  * callers must not silently treat a missing identity as "no key needed".
  */
+export async function deleteIdentityKey(): Promise<void> {
+  await Keychain.resetGenericPassword({ service: IDENTITY_KEY_SERVICE });
+}
+
 export async function getOrCreateIdentityKey(): Promise<IdentityKey> {
   const cached = await Keychain.getGenericPassword({
     service: IDENTITY_KEY_SERVICE,
