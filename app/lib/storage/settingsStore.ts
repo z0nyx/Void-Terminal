@@ -1,8 +1,8 @@
-import { create } from 'zustand';
-import { getJSON, setJSON } from './mmkv';
-import type { ThemeName } from '../theme/tokens';
+import { create } from "zustand";
+import { getJSON, setJSON } from "./mmkv";
+import type { ThemeName } from "../theme/tokens";
 
-const KEY = 'void.settings';
+const KEY = "void.settings";
 
 export interface KeyBarOptions {
   stickyModifiers: boolean;
@@ -24,13 +24,19 @@ interface SettingsState {
 }
 
 const defaults = {
-  theme: 'dark' as ThemeName,
+  theme: "dark" as ThemeName,
   fontSize: 13,
   welcomed: false,
-  keyBar: { stickyModifiers: true, haptics: true, swipeRows: false } as KeyBarOptions,
+  keyBar: {
+    stickyModifiers: true,
+    haptics: true,
+    swipeRows: false,
+  } as KeyBarOptions,
 };
 
-function persist(state: Pick<SettingsState, 'theme' | 'fontSize' | 'welcomed' | 'keyBar'>) {
+function persist(
+  state: Pick<SettingsState, "theme" | "fontSize" | "welcomed" | "keyBar">,
+) {
   setJSON(KEY, {
     theme: state.theme,
     fontSize: state.fontSize,

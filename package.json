@@ -1,13 +1,23 @@
 {
   "name": "void-terminal",
   "version": "1.0.0",
+  "description": "A mobile SSH terminal client for Android — real key-bar modifier keys, ghost autocomplete, and a terminal that actually renders vim/htop/tmux correctly.",
+  "author": "zonyx",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/z0nyx/Void-Terminal.git"
+  },
   "main": "index.ts",
   "dependencies": {
     "@gorhom/bottom-sheet": "^5.2.14",
     "@react-navigation/bottom-tabs": "^7.18.18",
     "@react-navigation/native": "^7.3.18",
     "@xterm/headless": "^6.0.0",
+    "babel-preset-expo": "~57.0.0",
     "expo": "~57.0.18",
+    "expo-clipboard": "~57.0.1",
+    "expo-dev-client": "~57.0.18",
     "expo-font": "~57.0.2",
     "expo-haptics": "~57.0.2",
     "expo-local-authentication": "~57.0.2",
@@ -21,6 +31,7 @@
     "react-native-safe-area-context": "~5.7.0",
     "react-native-screens": "~4.26.0",
     "react-native-svg": "15.15.4",
+    "react-native-worklets": "0.10.4",
     "zustand": "^5.0.15"
   },
   "devDependencies": {
@@ -30,7 +41,6 @@
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
-    "ios": "expo start --ios",
     "web": "expo start --web",
     "typecheck": "tsc --noEmit"
   },

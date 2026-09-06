@@ -4,15 +4,15 @@ import type { ConnectResult, IdentityKeyResult, VoidSshEvents } from './VoidSsh.
 /**
  * Native bridge to a real interactive SSH shell (raw PTY byte stream, not
  * line-buffered) — see modules/void-ssh/README.md for why this exists as a
- * hand-written module instead of a community RN package, and for the
- * NMSSH (iOS) / sshj (Android) implementations this wraps.
+ * hand-written module instead of a community RN package, and for the sshj
+ * (Android) implementation this wraps.
  *
- * IMPORTANT: this native code has been written carefully against the
- * NMSSH and sshj APIs but has NOT been compiled or run on-device — the
- * sandbox this was built in has no Xcode/Android SDK toolchain. Building
- * and smoke-testing it (`npx expo prebuild` then `expo run:ios` /
- * `expo run:android`) is the first thing to do with this module on a real
- * dev machine, per README.md's verification checklist.
+ * IMPORTANT: this native code has been written carefully against the sshj
+ * API but has NOT been compiled or run on-device — the sandbox this was
+ * built in has no Android SDK toolchain. Building and smoke-testing it
+ * (`npx expo prebuild` then `expo run:android`) is the first thing to do
+ * with this module on a real dev machine, per README.md's verification
+ * checklist.
  */
 declare class VoidSshModule extends NativeModule<VoidSshEvents> {
   /**

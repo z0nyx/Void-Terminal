@@ -1,6 +1,20 @@
 const ANSI_16 = [
-  '#000000', '#cc0000', '#4e9a06', '#c4a000', '#3465a4', '#75507b', '#06989a', '#d3d7cf',
-  '#555753', '#ef2929', '#8ae234', '#fce94f', '#729fcf', '#ad7fa8', '#34e2e2', '#eeeeec',
+  "#000000",
+  "#cc0000",
+  "#4e9a06",
+  "#c4a000",
+  "#3465a4",
+  "#75507b",
+  "#06989a",
+  "#d3d7cf",
+  "#555753",
+  "#ef2929",
+  "#8ae234",
+  "#fce94f",
+  "#729fcf",
+  "#ad7fa8",
+  "#34e2e2",
+  "#eeeeec",
 ];
 
 function cubeChannel(i: number): number {
@@ -8,7 +22,7 @@ function cubeChannel(i: number): number {
 }
 
 function toHex(r: number, g: number, b: number): string {
-  return '#' + [r, g, b].map((v) => v.toString(16).padStart(2, '0')).join('');
+  return "#" + [r, g, b].map((v) => v.toString(16).padStart(2, "0")).join("");
 }
 
 const XTERM_256: string[] = (() => {
@@ -28,9 +42,9 @@ const XTERM_256: string[] = (() => {
 })();
 
 export function paletteColor(index: number): string {
-  return XTERM_256[index] ?? '#FBF7F4';
+  return XTERM_256[index] ?? "#FBF7F4";
 }
 
 export function rgbColor(value: number): string {
-  return '#' + (value & 0xffffff).toString(16).padStart(6, '0');
+  return "#" + (value & 0xffffff).toString(16).padStart(6, "0");
 }

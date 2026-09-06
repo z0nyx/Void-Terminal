@@ -12,16 +12,35 @@ import org.bouncycastle.crypto.generators.Ed25519KeyPairGenerator
 import org.bouncycastle.crypto.params.Ed25519KeyGenerationParameters
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters
 import org.bouncycastle.crypto.params.Ed25519PublicKeyParameters
+import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.security.MessageDigest
 import java.security.PublicKey
 import java.security.SecureRandom
+import java.security.Security
 import java.util.Base64
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 
 private const val KEY_TYPE = "ssh-ed25519"
+
+/**
+ * Android ships its own stripped-down provider already registered under the
+ * name "BC" (from AOSP's Conscrypt-era Bouncy Castle fork), which lacks
+ * modern algorithms like X25519. sshj looks up X25519/curve25519 key
+ * exchange by provider name "BC", finds Android's crippled one first, and
+ * fails with "no such algorithm: x25519 for provider BC". Swapping in the
+ * real org.bouncycastle:bcprov-jdk18on provider under the same name fixes
+ * it. Must run once, before any SSHClient is constructed.
+ */
+private object BouncyCastleFix {
+  init {
+    Security.removeProvider("BC")
+    Security.insertProviderAt(BouncyCastleProvider(), 1)
+  }
+  fun ensureApplied() {}
+}
 
 private class LiveConnection(val client: SSHClient) {
   @Volatile var hostKeyConfirmed = false
@@ -38,6 +57,10 @@ private class LiveConnection(val client: SSHClient) {
  * disposable test server before building anything else on top of this.
  */
 class VoidSshModule : Module() {
+  init {
+    BouncyCastleFix.ensureApplied()
+  }
+
   private val connections = ConcurrentHashMap<String, LiveConnection>()
 
   override fun definition() = ModuleDefinition {
@@ -55,10 +78,13 @@ class VoidSshModule : Module() {
 
       var fingerprint = ""
       var keyType = ""
-      client.addHostKeyVerifier(HostKeyVerifier { _, _, key ->
-        keyType = keyTypeName(key)
-        fingerprint = sha256Fingerprint(key)
-        true // transport-level accept always; app-level trust gate is verifyHostKey() below
+      client.addHostKeyVerifier(object : HostKeyVerifier {
+        override fun verify(hostname: String, port: Int, key: PublicKey): Boolean {
+          keyType = keyTypeName(key)
+          fingerprint = sha256Fingerprint(key)
+          return true // transport-level accept always; app-level trust gate is verifyHostKey() below
+        }
+        override fun findExistingAlgorithms(hostname: String, port: Int): List<String> = emptyList()
       })
 
       client.connect(host, port)
@@ -91,7 +117,7 @@ class VoidSshModule : Module() {
       val conn = requireConfirmed(connectionId)
       val keyFile = OpenSSHKeyFile()
       val finder = if (passphrase != null) PasswordUtils.createOneOff(passphrase.toCharArray()) else null
-      keyFile.init(privateKeyOpenSsh.reader(), null, finder)
+      keyFile.init(privateKeyOpenSsh.reader(), finder)
       conn.client.authPublickey(username, keyFile)
       sendEvent("onStatus", mapOf("connectionId" to connectionId, "status" to "authenticated"))
     }

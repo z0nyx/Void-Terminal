@@ -1,5 +1,5 @@
-import { Terminal } from '@xterm/headless';
-import { base64ToBytes } from './base64';
+import { Terminal } from "@xterm/headless";
+import { base64ToBytes } from "./base64";
 
 /**
  * Wraps one @xterm/headless Terminal — a real VT100/256-color/alt-screen

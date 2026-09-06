@@ -1,0 +1,29 @@
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'expo.modules.voidlocalshell'
+version = '0.1.0'
+
+android {
+  namespace "expo.modules.voidlocalshell"
+  defaultConfig {
+    versionCode 1
+    versionName "0.1.0"
+    externalNativeBuild {
+      cmake {
+        abiFilters "arm64-v8a", "armeabi-v7a", "x86_64", "x86"
+      }
+    }
+  }
+  externalNativeBuild {
+    cmake {
+      path "src/main/cpp/CMakeLists.txt"
+      version "3.22.1"
+    }
+  }
+  lintOptions {
+    abortOnError false
+  }
+}

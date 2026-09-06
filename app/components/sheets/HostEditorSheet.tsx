@@ -1,5 +1,5 @@
 import React, { forwardRef, useImperativeHandle, useMemo, useRef, useState, useCallback } from 'react';
-import { View, Pressable, StyleSheet } from 'react-native';
+import { View, Pressable, StyleSheet, Alert } from 'react-native';
 import { BottomSheetModal, BottomSheetView, BottomSheetTextInput, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import type { BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
 import { AppText } from '../ui/Text';
@@ -70,7 +70,7 @@ export const HostEditorSheet = forwardRef<HostEditorHandle>((_, ref) => {
 
   const isEditing = editingId !== null;
 
-  const save = () => {
+  const save = async () => {
     const trimmedName = name.trim() || (addr.includes('@') ? addr.split('@').pop()!.split(':')[0] : 'new-host');
     const trimmedAddr = addr.trim() || 'user@host:22';
     const patch = {
@@ -81,12 +81,16 @@ export const HostEditorSheet = forwardRef<HostEditorHandle>((_, ref) => {
       savePassword: savePass,
       icon: 'server' as const,
     };
-    if (isEditing) {
-      update(editingId!, patch, auth === 'password' ? password : undefined);
-    } else {
-      add(patch, auth === 'password' ? password : undefined);
-    }
+    const { passwordError } = isEditing
+      ? await update(editingId!, patch, auth === 'password' ? password : undefined)
+      : await add(patch, auth === 'password' ? password : undefined);
     sheetRef.current?.dismiss();
+    if (passwordError) {
+      Alert.alert(
+        'Password not saved',
+        `The device keychain rejected the write, so the password was NOT stored (you'll need to type it each time you connect):\n\n${passwordError}\n\nThis usually means the device has no screen lock (PIN/pattern/fingerprint/Face) set up — the keychain requires one to protect the secret. Set a screen lock in Android Settings, then edit this connection and re-enter the password.`
+      );
+    }
   };
 
   const doDelete = () => {

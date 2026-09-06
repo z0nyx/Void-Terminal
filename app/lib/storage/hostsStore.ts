@@ -1,11 +1,11 @@
-import { create } from 'zustand';
-import { getJSON, setJSON } from './mmkv';
-import * as keychain from './keychain';
+import { create } from "zustand";
+import { getJSON, setJSON } from "./mmkv";
+import * as keychain from "./keychain";
 
-const KEY = 'void.hosts';
+const KEY = "void.hosts";
 
-export type AuthMethod = 'key' | 'password';
-export type HostIcon = 'cloud' | 'ci' | 'cpu' | 'db' | 'server';
+export type AuthMethod = "key" | "password";
+export type HostIcon = "cloud" | "ci" | "cpu" | "db" | "server";
 
 export interface Host {
   id: string;
@@ -18,12 +18,30 @@ export interface Host {
   lastConnectedAt: number | null;
 }
 
+export interface SaveResult {
+  host: Host;
+  /** Set when authMethod/savePassword asked to store a password but the keychain write actually failed — the host is still saved, with savePassword forced to false so the UI reflects reality. */
+  passwordError: string | null;
+}
+
 interface HostsState {
   hosts: Host[];
-  add: (h: Omit<Host, 'id' | 'lastConnectedAt'>, password?: string) => Host;
-  update: (id: string, patch: Partial<Omit<Host, 'id'>>, password?: string) => void;
+  add: (
+    h: Omit<Host, "id" | "lastConnectedAt">,
+    password?: string,
+  ) => Promise<SaveResult>;
+  update: (
+    id: string,
+    patch: Partial<Omit<Host, "id">>,
+    password?: string,
+  ) => Promise<{ passwordError: string | null }>;
   remove: (id: string) => void;
   touch: (id: string) => void;
+}
+
+function keychainErrorMessage(e: unknown): string {
+  const msg = e instanceof Error ? e.message : String(e);
+  return msg || "unknown keychain error";
 }
 
 function persist(hosts: Host[]) {
@@ -42,33 +60,55 @@ export interface ParsedAddr {
 
 /** Parses "user@host:port" (port defaults to 22, username defaults to the device's typical remote-admin convention "root" only as a last resort). */
 export function parseAddr(addr: string): ParsedAddr {
-  const [userPart, rest] = addr.includes('@') ? addr.split(/@(.+)/) : ['root', addr];
-  const [hostname, portStr] = rest.split(':');
-  return { username: userPart, hostname, port: portStr ? parseInt(portStr, 10) : 22 };
+  const [userPart, rest] = addr.includes("@")
+    ? addr.split(/@(.+)/)
+    : ["root", addr];
+  const [hostname, portStr] = rest.split(":");
+  return {
+    username: userPart,
+    hostname,
+    port: portStr ? parseInt(portStr, 10) : 22,
+  };
 }
 
 export const useHostsStore = create<HostsState>((set, get) => ({
   hosts: getJSON<Host[]>(KEY, []),
-  add: (h, password) => {
-    const host: Host = { ...h, id: makeId(), lastConnectedAt: null };
+  add: async (h, password) => {
+    let host: Host = { ...h, id: makeId(), lastConnectedAt: null };
+    let passwordError: string | null = null;
+    if (h.authMethod === "password" && h.savePassword && password) {
+      try {
+        await keychain.savePassword(host.id, password);
+      } catch (e) {
+        passwordError = keychainErrorMessage(e);
+        host = { ...host, savePassword: false };
+      }
+    }
     const hosts = [host, ...get().hosts];
     set({ hosts });
     persist(hosts);
-    if (h.authMethod === 'password' && h.savePassword && password) {
-      keychain.savePassword(host.id, password).catch(() => {});
-    }
-    return host;
+    return { host, passwordError };
   },
-  update: (id, patch, password) => {
-    const hosts = get().hosts.map((h) => (h.id === id ? { ...h, ...patch } : h));
-    set({ hosts });
-    persist(hosts);
-    if (patch.authMethod === 'password' && patch.savePassword && password) {
-      keychain.savePassword(id, password).catch(() => {});
+  update: async (id, patch, password) => {
+    let passwordError: string | null = null;
+    let effectivePatch = patch;
+    if (patch.authMethod === "password" && patch.savePassword && password) {
+      try {
+        await keychain.savePassword(id, password);
+      } catch (e) {
+        passwordError = keychainErrorMessage(e);
+        effectivePatch = { ...patch, savePassword: false };
+      }
     }
     if (patch.savePassword === false) {
       keychain.deletePassword(id).catch(() => {});
     }
+    const hosts = get().hosts.map((h) =>
+      h.id === id ? { ...h, ...effectivePatch } : h,
+    );
+    set({ hosts });
+    persist(hosts);
+    return { passwordError };
   },
   remove: (id) => {
     const hosts = get().hosts.filter((h) => h.id !== id);
@@ -78,7 +118,9 @@ export const useHostsStore = create<HostsState>((set, get) => ({
     keychain.deletePrivateKey(id).catch(() => {});
   },
   touch: (id) => {
-    const hosts = get().hosts.map((h) => (h.id === id ? { ...h, lastConnectedAt: Date.now() } : h));
+    const hosts = get().hosts.map((h) =>
+      h.id === id ? { ...h, lastConnectedAt: Date.now() } : h,
+    );
     set({ hosts });
     persist(hosts);
   },

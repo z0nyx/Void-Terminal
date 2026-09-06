@@ -1,3 +1,4 @@
+import './app/lib/polyfills/xtermEnv';
 import { registerRootComponent } from 'expo';
 
 import App from './App';

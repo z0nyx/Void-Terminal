@@ -1,4 +1,5 @@
-const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+const CHARS =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 /**
  * RN/Hermes doesn't ship `atob`. Pulling in a whole Buffer polyfill for one
@@ -6,7 +7,7 @@ const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
  * plain base64 (see modules/void-ssh), so a small direct decoder is enough.
  */
 export function base64ToBytes(base64: string): Uint8Array {
-  const clean = base64.replace(/[^A-Za-z0-9+/]/g, '');
+  const clean = base64.replace(/[^A-Za-z0-9+/]/g, "");
   const byteLength = Math.floor((clean.length * 6) / 8);
   const bytes = new Uint8Array(byteLength);
 

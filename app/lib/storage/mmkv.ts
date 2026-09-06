@@ -1,11 +1,11 @@
-import { createMMKV } from 'react-native-mmkv';
+import { createMMKV } from "react-native-mmkv";
 
 /**
  * Non-secret local state only: theme, font size, key-bar toggles, host
  * metadata, command history, snippets. Passwords and private keys never
  * touch this store — see lib/storage/keychain.ts for those.
  */
-export const storage = createMMKV({ id: 'void-terminal' });
+export const storage = createMMKV({ id: "void-terminal" });
 
 export function getJSON<T>(key: string, fallback: T): T {
   const raw = storage.getString(key);
